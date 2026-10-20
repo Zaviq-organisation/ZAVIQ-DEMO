@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAVIQ — Architectural Minimalist Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            black: '#0c0c0d',
+                            charcoal: '#1a1a1c',
+                            carbon: '#262628',
+                            slate: '#474749',
+                            muted: '#71717a',
+                            lightgrey: '#e4e4e7',
+                            offwhite: '#f4f4f5',
+                            purewhite: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Space Grotesk"', 'sans-serif']
+                    },
+                    letterSpacing: {
+                        widest2: '0.25em',
+                        luxury: '0.35em'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar and sleek interactions */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #71717a;
+        }
+        .backdrop-blur-luxury {
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            color: transparent;
+        }
+        .text-stroke:hover {
+            color: #ffffff;
+            -webkit-text-stroke: 1px transparent;
+            transition: all 0.4s ease;
+        }
+    </style>
+</head>
+<body class="bg-[#0b0b0c] text-brand-offwhite font-sans antialiased selection:bg-brand-purewhite selection:text-brand-black overflow-x-hidden">
+
+    <aside class="bg-brand-purewhite text-brand-black text-[11px] font-semibold tracking-widest2 py-2 px-4 uppercase text-center flex items-center justify-center gap-3 transition-all duration-300">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-brand-black animate-pulse"></span>
+        <span>ZAVIQ SS/26 — Global Complimentary Shipping on Inception Orders</span>
+        <span class="hidden md:inline-block opacity-40">|</span>
+        <span class="hidden md:inline-block text-[10px] tracking-widest">EDITION 001 AVAILABLE NOW</span>
+    </aside>
+
+    <header class="sticky top-0 z-40 w-full bg-[#0b0b0c]/85 border-b border-brand-carbon/60 backdrop-blur-luxury transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-5 lg:px-10 h-20 flex items-center justify-between">
+            <!-- Mobile Menu Trigger -->
+            <button id="mobileMenuBtn" aria-label="Toggle navigation menu" class="md:hidden p-2 text-brand-offwhite hover:text-brand-muted transition-colors">
+                <i class="fa-solid fa-bars-staggered text-lg"></i>
+            </button>
+
+            <!-- Brand Monogram & Logo -->
+            <div class="flex items-center gap-12">
+                <a href="#" class="group flex items-center gap-3">
+                    <span class="w-7 h-7 border border-brand-purewhite/70 flex items-center justify-center text-xs font-display font-bold tracking-widest text-brand-purewhite group-hover:bg-brand-purewhite group-hover:text-brand-black transition-all duration-300 rounded-sm">Z</span>
+                    <span class="font-display font-extrabold text-2xl tracking-widest2 uppercase text-brand-purewhite">ZAVIQ</span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-8 text-xs font-medium tracking-widest uppercase text-brand-muted">
+                    <a href="#collection" class="hover:text-brand-purewhite transition-colors duration-200">Collection</a>
+                    <a href="#curation" class="hover:text-brand-purewhite transition-colors duration-200">The Curation</a>
+                    <a href="#lookbook" class="hover:text-brand-purewhite transition-colors duration-200">Lookbook</a>
+                    <a href="#manifesto" class="hover:text-brand-purewhite transition-colors duration-200">Manifesto</a>
+                </nav>
+            </div>
+
+            <!-- Header Utility Icons -->
+            <div class="flex items-center gap-3 sm:gap-5 text-sm">
+                <!-- Search bar toggle -->
+                <button id="searchOpenBtn" aria-label="Search" class="p-2 text-brand-muted hover:text-brand-purewhite transition-colors">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button id="wishlistHeaderBtn" aria-label="Favorites" class="relative p-2 text-brand-muted hover:text-brand-purewhite transition-colors">
+                    <i class="fa-regular fa-heart"></i>
+                    <span id="wishlistCount" class="absolute top-1 right-1 w-3.5 h-3.5 bg-brand-lightgrey text-brand-black rounded-full text-[9px] font-bold flex items-center justify-center">0</span>
+                </button>
+                <!-- Cart Trigger with Badge -->
+                <button id="cartDrawerBtn" aria-label="Cart" class="relative p-2.5 bg-brand-charcoal border border-brand-carbon hover:border-brand-muted rounded-full text-brand-purewhite flex items-center gap-2 px-4 transition-all duration-300">
+                    <i class="fa-solid fa-bag-shopping text-xs"></i>
+                    <span class="text-xs font-semibold tracking-wider font-display" id="cartCountBadge">0</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="searchOverlay" class="hidden border-t border-brand-carbon/60 bg-[#0e0e10] py-4 px-6 transition-all duration-300">
+            <div class="max-w-3xl mx-auto flex items-center gap-3">
+                <i class="fa-solid fa-magnifying-glass text-brand-muted text-sm"></i>
+                <input id="searchInput" type="text" placeholder="Search monochrome blazers, trousers, silhouettes..." class="w-full bg-transparent text-sm text-brand-purewhite placeholder-brand-muted focus:outline-none">
+                <button id="searchCloseBtn" class="text-xs uppercase tracking-widest text-brand-muted hover:text-brand-purewhite">Close</button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobileMenu" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden transition-opacity duration-300">
+        <div class="w-4/5 max-w-sm h-full bg-[#111113] p-8 flex flex-col justify-between border-r border-brand-carbon">
+            <div>
+                <div class="flex items-center justify-between pb-8 border-b border-brand-carbon">
+                    <span class="font-display font-extrabold text-xl tracking-widest text-brand-purewhite">ZAVIQ</span>
+                    <button id="mobileMenuClose" class="text-brand-muted hover:text-brand-purewhite text-xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6 pt-8 text-sm font-medium tracking-widest uppercase text-brand-offwhite">
+                    <a href="#collection" class="mobileNavTrigger hover:text-brand-muted">Collection</a>
+                    <a href="#curation" class="mobileNavTrigger hover:text-brand-muted">The Curation</a>
+                    <a href="#lookbook" class="mobileNavTrigger hover:text-brand-muted">Lookbook 2026</a>
+                    <a href="#manifesto" class="mobileNavTrigger hover:text-brand-muted">Philosophy</a>
+                    <a href="#newsletter" class="mobileNavTrigger hover:text-brand-muted">Journal Club</a>
+                </div>
+            </div>
+            <div class="text-xs text-brand-muted border-t border-brand-carbon pt-6 space-y-2">
+                <p>Architectural Precision • Monochrome</p>
+                <p class="font-mono text-[11px] text-brand-slate">ZAVIQ DESIGN STUDIO © 2026</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6 py-20 border-b border-brand-carbon/60">
+        <!-- Abstract Monochrome Ambient Light Grid -->
+        <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-25"></div>
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-brand-lightgrey/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-brand-slate/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-8 text-left z-10">
+                <div class="inline-flex items-center gap-3 px-3 py-1 rounded-full border border-brand-carbon bg-brand-charcoal/60 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-brand-purewhite"></span>
+                    <span class="text-[11px] uppercase tracking-widest text-brand-lightgrey font-medium">Autumn/Winter 26 Capsule</span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tight leading-[1.05] text-brand-purewhite">
+                    FORM IN <span class="italic font-light text-brand-muted">SHADOW</span>,<br>
+                    PURITY IN <span class="bg-gradient-to-r from-brand-purewhite via-brand-lightgrey to-brand-slate bg-clip-text text-transparent">LIGHT.</span>
+                </h1>
+
+                <p class="text-base sm:text-lg text-brand-muted max-w-xl font-light leading-relaxed">
+                    ZAVIQ distills the human wardrobe to pure geometry, tailored gravity, and bespoke grey-scale luxury. Engineered for intentional presence.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-4 pt-2">
+                    <a href="#collection" class="px-8 py-4 bg-brand-purewhite text-brand-black font-semibold text-xs uppercase tracking-luxury hover:bg-brand-lightgrey transition-all duration-300 rounded-sm shadow-xl flex items-center gap-3 group">
+                        <span>Explore Collection</span>
+                        <i class="fa-solid fa-arrow-right text-[10px] transform group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#lookbook" class="px-8 py-4 border border-brand-carbon hover:border-brand-lightgrey text-brand-offwhite font-medium text-xs uppercase tracking-luxury transition-all duration-300 rounded-sm">
+                        View Lookbook
+                    </a>
+                </div>
+
+                <!-- Subtle specs/kpis -->
+                <div class="grid grid-cols-3 gap-6 pt-6 border-t border-brand-carbon/60 text-left">
+                    <div>
+                        <div class="text-xl font-display font-bold text-brand-purewhite">100%</div>
+                        <div class="text-[11px] uppercase tracking-widest text-brand-muted mt-1">Japanese Wool</div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-display font-bold text-brand-purewhite">001</div>
+                        <div class="text-[11px] uppercase tracking-widest text-brand-muted mt-1">Numbered Series</div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-display font-bold text-brand-purewhite">0.0</div>
+                        <div class="text-[11px] uppercase tracking-widest text-brand-muted mt-1">Color Distraction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Minimalist Showcase Card -->
+            <div class="lg:col-span-5 relative">
+                <div class="relative mx-auto w-full max-w-md aspect-[3/4] bg-brand-charcoal rounded-xl overflow-hidden border border-brand-carbon shadow-2xl group">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=80" 
+                         alt="Zaviq Minimalist Tailored Silhouette" 
+                         onerror="this.src='https://placehold.co/600x800/18181b/ffffff?text=ZAVIQ+LOOK+01'" 
+                         class="w-full h-full object-cover grayscale contrast-125 brightness-95 group-hover:scale-105 transition-transform duration-700 ease-out">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80"></div>
+                    
+                    <div class="absolute bottom-6 left-6 right-6 p-4 bg-brand-black/70 backdrop-blur-md border border-brand-carbon rounded-lg flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] tracking-widest uppercase text-brand-muted">Campaign Keypiece</p>
+                            <h3 class="text-sm font-semibold text-brand-purewhite uppercase tracking-wider">Apex Monolith Overcoat</h3>
+                        </div>
+                        <button onclick="quickView('p1')" class="text-xs px-3 py-1.5 bg-brand-purewhite text-brand-black font-semibold rounded uppercase tracking-wider hover:bg-brand-lightgrey">
+                            Examine
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="curation" class="py-24 px-6 border-b border-brand-carbon/60 bg-[#0f0f11]">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-brand-muted font-medium">Curatorial Directives</span>
+                    <h2 class="text-3xl md:text-5xl font-display font-bold text-brand-purewhite tracking-tight mt-2">
+                        MONOCHROME DISCIPLINE
+                    </h2>
+                </div>
+                <p class="text-brand-muted max-w-md text-sm leading-relaxed">
+                    By eliminating chromatic excess, ZAVIQ elevates structure, tactile drape, and stark silhouette. Each piece functions as wearable architecture.
+                </p>
+            </div>
+
+            <!-- Pillars Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-lg bg-brand-charcoal/40 border border-brand-carbon hover:border-brand-slate transition-all duration-300">
+                    <div class="text-brand-lightgrey text-2xl mb-5 font-mono">/ 01</div>
+                    <h3 class="text-lg font-display font-bold tracking-wide text-brand-purewhite mb-3 uppercase">Architectural Cuts</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">
+                        Exaggerated shoulder pads, dropped notches, and sculptural hems crafted to hold tension in motion.
+                    </p>
+                </div>
+                <div class="p-8 rounded-lg bg-brand-charcoal/40 border border-brand-carbon hover:border-brand-slate transition-all duration-300">
+                    <div class="text-brand-lightgrey text-2xl mb-5 font-mono">/ 02</div>
+                    <h3 class="text-lg font-display font-bold tracking-wide text-brand-purewhite mb-3 uppercase">Tonal Gradients</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">
+                        Pure jet-black, raw graphite, fog grey, and optical stark white. Precision dyes formulated to never fade unevenly.
+                    </p>
+                </div>
+                <div class="p-8 rounded-lg bg-brand-charcoal/40 border border-brand-carbon hover:border-brand-slate transition-all duration-300">
+                    <div class="text-brand-lightgrey text-2xl mb-5 font-mono">/ 03</div>
+                    <h3 class="text-lg font-display font-bold tracking-wide text-brand-purewhite mb-3 uppercase">Substance & Longevity</h3>
+                    <p class="text-sm text-brand-muted leading-relaxed">
+                        High-density heavyweight weaves resistant to seasonal decay. Tailoring meant to age with dignified patina.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="collection" class="py-24 px-6 border-b border-brand-carbon/60">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header and Filter Bar -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-brand-muted font-medium">Ready To Wear Series</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold text-brand-purewhite tracking-tight mt-1">THE CATALOGUE</h2>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="flex flex-wrap items-center gap-2" id="filterContainer">
+                    <button data-filter="all" class="filter-btn active px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full bg-brand-purewhite text-brand-black border border-brand-purewhite transition-all">All Objects</button>
+                    <button data-filter="outerwear" class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full bg-brand-charcoal text-brand-muted border border-brand-carbon hover:text-brand-purewhite transition-all">Outerwear</button>
+                    <button data-filter="tailoring" class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full bg-brand-charcoal text-brand-muted border border-brand-carbon hover:text-brand-purewhite transition-all">Tailoring</button>
+                    <button data-filter="knitwear" class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full bg-brand-charcoal text-brand-muted border border-brand-carbon hover:text-brand-purewhite transition-all">Knitwear</button>
+                    <button data-filter="acc" class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full bg-brand-charcoal text-brand-muted border border-brand-carbon hover:text-brand-purewhite transition-all">Objects & Acc</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Product Grid -->
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section id="lookbook" class="py-24 px-6 bg-brand-charcoal/20 border-b border-brand-carbon/60">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-xs uppercase tracking-luxury text-brand-muted">Editorial Documentation</span>
+                <h2 class="text-3xl sm:text-5xl font-display font-bold text-brand-purewhite tracking-tight mt-2">SERIES IN SITU</h2>
+                <p class="text-brand-muted text-sm mt-4">Captured in concrete brutalist architecture under natural overcast skies.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+                <div class="md:col-span-8 group relative rounded-lg overflow-hidden border border-brand-carbon aspect-[16/10] bg-brand-charcoal">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80" 
+                         alt="Zaviq Campaign Lookbook" 
+                         onerror="this.src='https://placehold.co/1200x800/18181b/ffffff?text=ZAVIQ+LOOKBOOK+A'"
+                         class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="text-[10px] uppercase font-mono tracking-widest text-brand-lightgrey">Frame 01 / Berlin</span>
+                        <h4 class="text-lg font-display font-bold text-brand-purewhite uppercase">Double-Faced Wool Inversion</h4>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 group relative rounded-lg overflow-hidden border border-brand-carbon aspect-[3/4] md:aspect-auto bg-brand-charcoal">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80" 
+                         alt="Zaviq Lookbook Close-up" 
+                         onerror="this.src='https://placehold.co/600x800/18181b/ffffff?text=ZAVIQ+LOOKBOOK+B'"
+                         class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="text-[10px] uppercase font-mono tracking-widest text-brand-lightgrey">Frame 02 / Tokyo</span>
+                        <h4 class="text-lg font-display font-bold text-brand-purewhite uppercase">Raw Hem Drape</h4>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 group relative rounded-lg overflow-hidden border border-brand-carbon aspect-[3/4] md:aspect-auto bg-brand-charcoal">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80" 
+                         alt="Zaviq Silhouette Details" 
+                         onerror="this.src='https://placehold.co/600x800/18181b/ffffff?text=ZAVIQ+LOOKBOOK+C'"
+                         class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="text-[10px] uppercase font-mono tracking-widest text-brand-lightgrey">Frame 03 / Basel</span>
+                        <h4 class="text-lg font-display font-bold text-brand-purewhite uppercase">Carbon Layering</h4>
+                    </div>
+                </div>
+
+                <div class="md:col-span-8 group relative rounded-lg overflow-hidden border border-brand-carbon aspect-[16/10] bg-brand-charcoal">
+                    <img src="https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1200&q=80" 
+                         alt="Zaviq Modern Tailoring" 
+                         onerror="this.src='https://placehold.co/1200x800/18181b/ffffff?text=ZAVIQ+LOOKBOOK+D'"
+                         class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="text-[10px] uppercase font-mono tracking-widest text-brand-lightgrey">Frame 04 / Seoul</span>
+                        <h4 class="text-lg font-display font-bold text-brand-purewhite uppercase">The Fluid Monolith</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="manifesto" class="py-24 px-6 border-b border-brand-carbon/60 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center space-y-8">
+            <span class="font-mono text-xs uppercase tracking-widest text-brand-muted">Studio Philosophy</span>
+            <blockquote class="text-2xl sm:text-4xl font-display font-light text-brand-purewhite leading-snug tracking-tight">
+                "We do not design garments to fill wardrobes. We design <span class="font-semibold underline decoration-brand-muted underline-offset-8">tonal armor</span> for the individuals navigating modern architectural landscapes."
+            </blockquote>
+            <p class="text-sm text-brand-muted max-w-xl mx-auto leading-relaxed">
+                Founded as an uncompromising study of dark neutrality. ZAVIQ removes all logos, all neon distractions, and superfluous embellishments to honor true silhouette.
+            </p>
+            <div class="pt-4 flex items-center justify-center gap-3">
+                <span class="h-[1px] w-12 bg-brand-carbon"></span>
+                <span class="text-xs font-display font-semibold uppercase tracking-luxury text-brand-lightgrey">ZAVIQ ATELIER</span>
+                <span class="h-[1px] w-12 bg-brand-carbon"></span>
+            </div>
+        </div>
+    </section>
+
+    <section id="newsletter" class="py-20 px-6 bg-[#09090a]">
+        <div class="max-w-3xl mx-auto text-center space-y-6">
+            <h3 class="text-2xl sm:text-3xl font-display font-bold text-brand-purewhite uppercase tracking-wider">
+                Access Private Releases
+            </h3>
+            <p class="text-brand-muted text-sm leading-relaxed">
+                Join our private ledger for limited release drop codes, design essays, and runway archival recordings.
+            </p>
+            <form id="newsletterForm" class="flex flex-col sm:flex-row items-center gap-3 max-w-md mx-auto pt-2">
+                <input type="email" required placeholder="Enter your email address" class="w-full px-4 py-3.5 bg-brand-charcoal text-sm text-brand-purewhite border border-brand-carbon rounded-sm focus:outline-none focus:border-brand-purewhite transition-colors placeholder:text-brand-muted">
+                <button type="submit" class="w-full sm:w-auto whitespace-nowrap px-6 py-3.5 bg-brand-purewhite text-brand-black text-xs font-bold uppercase tracking-widest hover:bg-brand-lightgrey transition-colors rounded-sm">
+                    Inquire
+                </button>
+            </form>
+            <p id="newsletterSuccess" class="hidden text-xs text-brand-lightgrey tracking-wider font-mono">You are now logged into the ZAVIQ private roster.</p>
+        </div>
+    </section>
+
+    <footer class="bg-[#070708] border-t border-brand-carbon text-brand-muted py-16 px-6 text-xs">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-brand-carbon/60">
+            <div class="space-y-4">
+                <span class="font-display font-bold text-xl tracking-widest text-brand-purewhite">ZAVIQ</span>
+                <p class="leading-relaxed text-brand-slate text-[13px]">
+                    Grey, Black, and White minimal fashion house. Built for modern portfolios, refined through architectural silhouette.
+                </p>
+                <div class="flex gap-4 text-brand-lightgrey text-sm pt-2">
+                    <a href="#" class="hover:text-brand-purewhite transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-brand-purewhite transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="hover:text-brand-purewhite transition-colors"><i class="fa-brands fa-pinterest-p"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h5 class="text-brand-purewhite font-semibold uppercase tracking-wider mb-4">Navigation</h5>
+                <ul class="space-y-2.5">
+                    <li><a href="#collection" class="hover:text-brand-purewhite transition-colors">Seasonal Lookbook</a></li>
+                    <li><a href="#collection" class="hover:text-brand-purewhite transition-colors">All Black Series</a></li>
+                    <li><a href="#collection" class="hover:text-brand-purewhite transition-colors">Slate Tailoring</a></li>
+                    <li><a href="#curation" class="hover:text-brand-purewhite transition-colors">Archival Items</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-brand-purewhite font-semibold uppercase tracking-wider mb-4">Client Relations</h5>
+                <ul class="space-y-2.5">
+                    <li><a href="#" onclick="showToast('Complimentary global shipping on all SS/26 drops'); return false;" class="hover:text-brand-purewhite transition-colors">Shipping & Duty</a></li>
+                    <li><a href="#" onclick="showToast('Returns accepted within 14 days of delivery in pristine state'); return false;" class="hover:text-brand-purewhite transition-colors">Returns & Exchange</a></li>
+                    <li><a href="#" onclick="showToast('Care instructions: Dry clean only for pure wool fabrications'); return false;" class="hover:text-brand-purewhite transition-colors">Garment Preservation</a></li>
+                    <li><a href="#" onclick="showToast('Direct inquiries to studio@zaviq.fashion'); return false;" class="hover:text-brand-purewhite transition-colors">Bespoke Fitting</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-brand-purewhite font-semibold uppercase tracking-wider mb-4">Portfolio Project</h5>
+                <p class="text-[13px] leading-relaxed text-brand-slate mb-3">
+                    Created as a capstone professional showcase highlighting luxury UX design, minimal palette application, and interactive eCommerce frontends.
+                </p>
+                <span class="inline-block px-2.5 py-1 bg-brand-charcoal border border-brand-carbon rounded text-[11px] font-mono text-brand-lightgrey">
+                    v1.0.4 — 2026 Edition
+                </span>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-brand-slate gap-4">
+            <p>© 2026 ZAVIQ INC. ALL RIGHTS RESERVED.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-brand-purewhite transition-colors">PRIVACY TERMS</a>
+                <a href="#" class="hover:text-brand-purewhite transition-colors">COOKIE PREFERENCES</a>
+                <a href="#" class="hover:text-brand-purewhite transition-colors">PORTFOLIO CASE STUDY</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-all duration-300">
+        <div id="cartBackdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"></div>
+        <div id="cartPanel" class="absolute inset-y-0 right-0 max-w-full w-full sm:w-[420px] bg-[#121214] border-l border-brand-carbon shadow-2xl transform translate-x-full transition-transform duration-300 pointer-events-auto flex flex-col justify-between">
+            <!-- Cart Header -->
+            <div class="p-6 border-b border-brand-carbon flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="font-display font-bold uppercase tracking-wider text-brand-purewhite">Cart Ledger</span>
+                    <span id="cartDrawerItemCount" class="text-xs text-brand-muted font-mono">(0)</span>
+                </div>
+                <button id="cartCloseBtn" class="text-brand-muted hover:text-brand-purewhite p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Cart Body Items -->
+            <div id="cartItemsList" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div id="emptyCartState" class="h-full flex flex-col items-center justify-center text-center text-brand-muted py-12">
+                    <i class="fa-solid fa-bag-shopping text-3xl mb-3 opacity-30"></i>
+                    <p class="text-sm uppercase tracking-widest text-brand-offwhite">Your bag is empty</p>
+                    <p class="text-xs text-brand-slate mt-1 max-w-xs">Items selected from the seasonal catalogue will appear here.</p>
+                </div>
+            </div>
+
+            <!-- Cart Summary & Checkout -->
+            <div class="p-6 border-t border-brand-carbon bg-brand-charcoal/40 space-y-4">
+                <div class="flex justify-between items-center text-xs tracking-wider uppercase text-brand-muted">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal" class="font-mono text-brand-purewhite font-bold text-sm">$0.00</span>
+                </div>
+                <div class="flex justify-between items-center text-xs tracking-wider uppercase text-brand-muted">
+                    <span>Monochrome Shipping</span>
+                    <span class="text-brand-lightgrey font-mono">Complimentary</span>
+                </div>
+                <button id="checkoutBtn" class="w-full py-4 bg-brand-purewhite text-brand-black text-xs font-bold uppercase tracking-luxury hover:bg-brand-lightgrey transition-colors rounded-sm">
+                    Proceed To Checkout
+                </button>
+                <p class="text-[10px] text-center text-brand-slate tracking-wider">SECURE ENCRYPTED MONOCHROME CHECKOUT</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="quickModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden transition-all duration-300">
+        <div class="relative w-full max-w-3xl bg-[#131316] border border-brand-carbon rounded-xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-2">
+            <button id="modalCloseBtn" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-brand-charcoal text-brand-purewhite flex items-center justify-center hover:bg-brand-carbon transition-colors">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <!-- Product Visual Container -->
+            <div class="relative aspect-[3/4] md:aspect-auto bg-brand-charcoal">
+                <img id="modalImg" src="" alt="Zaviq Product" class="w-full h-full object-cover grayscale contrast-125">
+            </div>
+
+            <!-- Product Data Container -->
+            <div class="p-8 flex flex-col justify-between">
+                <div>
+                    <span id="modalCategory" class="text-[10px] uppercase font-mono tracking-widest text-brand-muted">Category</span>
+                    <h3 id="modalTitle" class="text-xl font-display font-bold text-brand-purewhite tracking-tight mt-1 mb-2">Item Title</h3>
+                    <div id="modalPrice" class="text-lg font-mono font-bold text-brand-lightgrey mb-4">$000</div>
+                    <p id="modalDesc" class="text-xs text-brand-muted leading-relaxed mb-6">Description</p>
+
+                    <!-- Size Selector -->
+                    <div class="mb-6">
+                        <label class="block text-[11px] uppercase tracking-wider text-brand-offwhite mb-2 font-medium">Select Silhouette Scale</label>
+                        <div class="flex gap-2">
+                            <button type="button" class="size-pill active flex-1 py-2 text-xs border border-brand-carbon hover:border-brand-purewhite font-medium rounded text-brand-purewhite">S</button>
+                            <button type="button" class="size-pill flex-1 py-2 text-xs border border-brand-carbon hover:border-brand-purewhite font-medium rounded text-brand-purewhite">M</button>
+                            <button type="button" class="size-pill flex-1 py-2 text-xs border border-brand-carbon hover:border-brand-purewhite font-medium rounded text-brand-purewhite">L</button>
+                            <button type="button" class="size-pill flex-1 py-2 text-xs border border-brand-carbon hover:border-brand-purewhite font-medium rounded text-brand-purewhite">XL</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <button id="modalAddToCart" class="w-full py-3.5 bg-brand-purewhite text-brand-black text-xs font-bold uppercase tracking-widest hover:bg-brand-lightgrey transition-colors rounded-sm">
+                        Add To Bag
+                    </button>
+                    <button id="modalWishlistBtn" class="w-full py-3 border border-brand-carbon text-xs font-semibold uppercase tracking-widest hover:border-brand-lightgrey text-brand-offwhite rounded-sm flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-heart"></i>
+                        <span>Save To Archive</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-brand-charcoal border border-brand-slate/60 text-brand-purewhite px-5 py-3 rounded-lg shadow-2xl flex items-center gap-3 text-xs tracking-wider font-medium">
+            <span class="w-2 h-2 rounded-full bg-brand-purewhite animate-ping"></span>
+            <span id="toastMsg">Action confirmed</span>
+        </div>
+    </div>
+
+    <script>
+        // High-end Catalog Data
+        const PRODUCTS = [
+            {
+                id: 'p1',
+                title: 'Apex Monolith Overcoat',
+                category: 'outerwear',
+                price: 640,
+                color: 'Obsidian Black',
+                image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80',
+                desc: 'Structured double-breasted coat crafted from 680gsm recycled melton wool. Dramatic drop-shoulder silhouette and concealed horn buttons.'
+            },
+            {
+                id: 'p2',
+                title: 'Brutalist Drape Trench',
+                category: 'outerwear',
+                price: 520,
+                color: 'Graphite Grey',
+                image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80',
+                desc: 'Bonded water-resistant cotton twill with an asymmetric storm flap and modular industrial belt.'
+            },
+            {
+                id: 'p3',
+                title: 'Asymmetric Tailored Blazer',
+                category: 'tailoring',
+                price: 460,
+                color: 'Pitch Black',
+                image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80',
+                desc: 'Architectural sharp lapel jacket with internal harness straps and floating canvas chest construction.'
+            },
+            {
+                id: 'p4',
+                title: 'Stark Flared Wool Trouser',
+                category: 'tailoring',
+                price: 320,
+                color: 'Slate Charcoal',
+                image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80',
+                desc: 'Extended inseam cut with sharp knife pleats and an adjustable cinched waistband.'
+            },
+            {
+                id: 'p5',
+                title: 'Heavy Gauge Mockneck',
+                category: 'knitwear',
+                price: 290,
+                color: 'Off-White Ivory',
+                image: 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=800&q=80',
+                desc: 'Spun from virgin Merino yarn with elongated sleeves and raw ribbed cuffs for natural folding.'
+            },
+            {
+                id: 'p6',
+                title: 'Seamless Kinetic Knit',
+                category: 'knitwear',
+                price: 240,
+                color: 'Shadow Grey',
+                image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80',
+                desc: '3D engineered compression weave that contours comfortably while upholding rigorous form.'
+            },
+            {
+                id: 'p7',
+                title: 'Matte Leather Cinch Tote',
+                category: 'acc',
+                price: 380,
+                color: 'Vanta Black',
+                image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+                desc: 'Full-grain calfskin bag finished with gunmetal nickel hardware and an internal padded laptop chamber.'
+            },
+            {
+                id: 'p8',
+                title: 'Concrete Frame Sunglasses',
+                category: 'acc',
+                price: 195,
+                color: 'Mineral Grey',
+                image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80',
+                desc: 'Acetate eyewear block-milled into angular bevels with 100% UV category 3 graphite lenses.'
+            }
+        ];
+
+        // App States
+        let cart = [];
+        let wishlist = [];
+        let activeFilter = 'all';
+        let currentModalProduct = null;
+        let selectedSize = 'M';
+
+        // Elements
+        const productGrid = document.getElementById('productGrid');
+        const cartDrawer = document.getElementById('cartDrawer');
+        const cartBackdrop = document.getElementById('cartBackdrop');
+        const cartPanel = document.getElementById('cartPanel');
+        const cartDrawerBtn = document.getElementById('cartDrawerBtn');
+        const cartCloseBtn = document.getElementById('cartCloseBtn');
+        const cartItemsList = document.getElementById('cartItemsList');
+        const cartCountBadge = document.getElementById('cartCountBadge');
+        const cartDrawerItemCount = document.getElementById('cartDrawerItemCount');
+        const cartSubtotal = document.getElementById('cartSubtotal');
+        const emptyCartState = document.getElementById('emptyCartState');
+
+        // Modal Elements
+        const quickModal = document.getElementById('quickModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalAddToCart = document.getElementById('modalAddToCart');
+
+        // Mobile Nav & Search
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const searchOpenBtn = document.getElementById('searchOpenBtn');
+        const searchCloseBtn = document.getElementById('searchCloseBtn');
+        const searchOverlay = document.getElementById('searchOverlay');
+        const searchInput = document.getElementById('searchInput');
+
+        // Toast Helper
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            const msg = document.getElementById('toastMsg');
+            msg.textContent = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+        function renderProducts(items) {
+            productGrid.innerHTML = '';
+            if (items.length === 0) {
+                productGrid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-brand-muted">
+                        <p class="text-sm uppercase tracking-widest">No silhouettes matched your search filter.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(product => {
+                const isFavorited = wishlist.includes(product.id);
+                const card = document.createElement('div');
+                card.className = "group flex flex-col bg-[#121214] border border-brand-carbon/80 rounded-lg overflow-hidden hover:border-brand-slate transition-all duration-300";
+                
+                card.innerHTML = `
+                    <div class="relative aspect-[3/4] overflow-hidden bg-brand-charcoal">
+                        <img src="${product.image}" alt="${product.title}" 
+                             onerror="this.src='https://placehold.co/600x800/18181b/ffffff?text=${encodeURIComponent(product.title)}'"
+                             class="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-700 ease-out">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                        <!-- Top Right Heart -->
+                        <button onclick="toggleWishlist('${product.id}')" aria-label="Add to wishlist" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-brand-black/60 backdrop-blur-md flex items-center justify-center text-brand-purewhite hover:bg-brand-purewhite hover:text-brand-black transition-colors">
+                            <i class="${isFavorited ? 'fa-solid text-red-500' : 'fa-regular'} fa-heart text-xs"></i>
+                        </button>
+
+                        <!-- Quick View Overlay Action -->
+                        <div class="absolute bottom-3 left-3 right-3 flex gap-2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                            <button onclick="quickView('${product.id}')" class="flex-1 py-2.5 bg-brand-charcoal/90 backdrop-blur-md text-brand-purewhite text-[11px] font-semibold uppercase tracking-wider hover:bg-brand-carbon rounded">
+                                Quick View
+                            </button>
+                            <button onclick="addToCart('${product.id}')" class="px-3 py-2.5 bg-brand-purewhite text-brand-black text-xs font-bold rounded hover:bg-brand-lightgrey">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Meta Details -->
+                    <div class="p-4 flex flex-col flex-1 justify-between space-y-2">
+                        <div>
+                            <div class="flex items-center justify-between text-[10px] uppercase font-mono tracking-widest text-brand-muted">
+                                <span>${product.category}</span>
+                                <span>${product.color}</span>
+                            </div>
+                            <h3 class="text-sm font-semibold text-brand-purewhite mt-1 group-hover:text-brand-lightgrey transition-colors">${product.title}</h3>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-brand-carbon/40">
+                            <span class="font-mono text-sm text-brand-lightgrey font-semibold">$${product.price}</span>
+                            <span class="text-[10px] text-brand-slate tracking-wider uppercase">SS/26</span>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+        }
+
+        function filterProducts() {
+            const query = searchInput.value.toLowerCase().trim();
+            const filtered = PRODUCTS.filter(p => {
+                const matchesFilter = (activeFilter === 'all') || (p.category === activeFilter);
+                const matchesQuery = p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query) || p.color.toLowerCase().includes(query);
+                return matchesFilter && matchesQuery;
+            });
+            renderProducts(filtered);
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('bg-brand-purewhite', 'text-brand-black', 'border-brand-purewhite');
+                    b.classList.add('bg-brand-charcoal', 'text-brand-muted', 'border-brand-carbon');
+                });
+                btn.classList.add('bg-brand-purewhite', 'text-brand-black', 'border-brand-purewhite');
+                btn.classList.remove('bg-brand-charcoal', 'text-brand-muted', 'border-brand-carbon');
+                activeFilter = btn.getAttribute('data-filter');
+                filterProducts();
+            });
+        });
+
+        // Search Input Listeners
+        searchInput.addEventListener('input', filterProducts);
+        searchOpenBtn.addEventListener('click', () => {
+            searchOverlay.classList.toggle('hidden');
+            if (!searchOverlay.classList.contains('hidden')) {
+                searchInput.focus();
+            }
+        });
+        searchCloseBtn.addEventListener('click', () => {
+            searchOverlay.classList.add('hidden');
+            searchInput.value = '';
+            filterProducts();
+        });
+
+        window.quickView = function(productId) {
+            const item = PRODUCTS.find(p => p.id === productId);
+            if (!item) return;
+            currentModalProduct = item;
+
+            modalImg.src = item.image;
+            modalImg.onerror = () => modalImg.src = `https://placehold.co/600x800/18181b/ffffff?text=${encodeURIComponent(item.title)}`;
+            modalTitle.textContent = item.title;
+            modalCategory.textContent = `${item.category} • ${item.color}`;
+            modalPrice.textContent = `$${item.price}`;
+            modalDesc.textContent = item.desc;
+
+            // Reset Size selection
+            document.querySelectorAll('.size-pill').forEach(pill => {
+                pill.classList.remove('bg-brand-purewhite', 'text-brand-black');
+                pill.classList.add('text-brand-purewhite');
+                if (pill.textContent.trim() === 'M') {
+                    pill.classList.add('bg-brand-purewhite', 'text-brand-black');
+                }
+            });
+            selectedSize = 'M';
+
+            quickModal.classList.remove('hidden');
+        };
+
+        modalCloseBtn.addEventListener('click', () => {
+            quickModal.classList.add('hidden');
+        });
+
+        quickModal.addEventListener('click', (e) => {
+            if (e.target === quickModal) {
+                quickModal.classList.add('hidden');
+            }
+        });
+
+        document.querySelectorAll('.size-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.size-pill').forEach(p => p.classList.remove('bg-brand-purewhite', 'text-brand-black'));
+                pill.classList.add('bg-brand-purewhite', 'text-brand-black');
+                selectedSize = pill.textContent.trim();
+            });
+        });
+
+        modalAddToCart.addEventListener('click', () => {
+            if (currentModalProduct) {
+                addToCart(currentModalProduct.id, selectedSize);
+                quickModal.classList.add('hidden');
+            }
+        });
+
+        window.addToCart = function(productId, size = 'M') {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIndex = cart.findIndex(item => item.id === productId && item.size === size);
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image: product.image,
+                    size: size,
+                    qty: 1
+                });
+            }
+
+            updateCartUI();
+            openCartDrawer();
+            showToast(`Added ${product.title} (${size}) to bag`);
+        };
+
+        function updateCartUI() {
+            // Count total
+            const totalItems = cart.reduce((acc, curr) => acc + curr.qty, 0);
+            cartCountBadge.textContent = totalItems;
+            cartDrawerItemCount.textContent = `(${totalItems})`;
+
+            // Subtotal
+            const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+            cartSubtotal.textContent = `$${subtotal.toLocaleString()}.00`;
+
+            // Render list
+            if (cart.length === 0) {
+                emptyCartState.style.display = 'flex';
+                cartItemsList.innerHTML = '';
+                cartItemsList.appendChild(emptyCartState);
+            } else {
+                emptyCartState.style.display = 'none';
+                cartItemsList.innerHTML = '';
+
+                cart.forEach((item, idx) => {
+                    const row = document.createElement('div');
+                    row.className = "flex gap-4 p-3 bg-brand-charcoal/50 border border-brand-carbon rounded-lg items-center";
+                    row.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" class="w-16 h-20 object-cover rounded grayscale contrast-125 border border-brand-carbon">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-semibold text-brand-purewhite truncate uppercase">${item.title}</h4>
+                            <p class="text-[11px] text-brand-muted font-mono mt-0.5">Scale: ${item.size} • $${item.price}</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <button onclick="changeCartQty(${idx}, -1)" class="w-5 h-5 rounded border border-brand-carbon flex items-center justify-center text-xs hover:border-brand-purewhite text-brand-offwhite">-</button>
+                                <span class="text-xs font-mono">${item.qty}</span>
+                                <button onclick="changeCartQty(${idx}, 1)" class="w-5 h-5 rounded border border-brand-carbon flex items-center justify-center text-xs hover:border-brand-purewhite text-brand-offwhite">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeCartItem(${idx})" class="text-brand-muted hover:text-brand-purewhite p-2">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    `;
+                    cartItemsList.appendChild(row);
+                });
+            }
+        }
+
+        window.changeCartQty = function(index, delta) {
+            if (!cart[index]) return;
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        };
+
+        window.removeCartItem = function(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            showToast('Item removed from cart');
+        };
+
+        function openCartDrawer() {
+            cartDrawer.classList.remove('pointer-events-none');
+            cartBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+            cartBackdrop.classList.add('opacity-100', 'pointer-events-auto');
+            cartPanel.classList.remove('translate-x-full');
+            cartPanel.classList.add('translate-x-0');
+        }
+
+        function closeCartDrawer() {
+            cartBackdrop.classList.add('opacity-0', 'pointer-events-none');
+            cartBackdrop.classList.remove('opacity-100', 'pointer-events-auto');
+            cartPanel.classList.add('translate-x-full');
+            cartPanel.classList.remove('translate-x-0');
+            setTimeout(() => {
+                cartDrawer.classList.add('pointer-events-none');
+            }, 300);
+        }
+
+        cartDrawerBtn.addEventListener('click', openCartDrawer);
+        cartCloseBtn.addEventListener('click', closeCartDrawer);
+        cartBackdrop.addEventListener('click', closeCartDrawer);
+
+        // Checkout Button trigger
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if (cart.length === 0) {
+                showToast('Bag is empty. Select objects first.');
+            } else {
+                showToast('Proceeding to encrypted monochrome payment portal...');
+            }
+        });
+
+        window.toggleWishlist = function(id) {
+            const index = wishlist.indexOf(id);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast('Archived piece removed');
+            } else {
+                wishlist.push(id);
+                showToast('Saved to personal archive');
+            }
+            document.getElementById('wishlistCount').textContent = wishlist.length;
+            filterProducts();
+        };
+
+        document.getElementById('wishlistHeaderBtn').addEventListener('click', () => {
+            if (wishlist.length === 0) {
+                showToast('No saved items in archive yet');
+            } else {
+                showToast(`You have ${wishlist.length} item(s) in personal archive`);
+            }
+        });
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        document.querySelectorAll('.mobileNavTrigger').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('newsletterForm').classList.add('hidden');
+            document.getElementById('newsletterSuccess').classList.remove('hidden');
+            showToast('Email verified for private drop access');
+        });
+
+        // Initial Boot
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts(PRODUCTS);
+        });
+    </script>
+</body>
+</html>
